@@ -1,0 +1,255 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Digital Adoption Interest Queue for managing animal adoption interest."
+    >
+
+    <title>Adoption Interest Queue</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-content">
+            <div>
+                <p class="eyebrow">ANIMAL SHELTER</p>
+                <h1>Adoption Interest Queue</h1>
+                <p class="header-description">
+                    Manage and organize adoption interest in one place.
+                </p>
+            </div>
+
+            <div class="status-badge" aria-label="Application status">
+                <span class="status-dot" aria-hidden="true"></span>
+                Queue Online
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-content">
+
+        <!-- Loading indicator -->
+        <div
+            id="loadingIndicator"
+            class="loading"
+            role="status"
+            aria-live="polite"
+            hidden
+        >
+            <span class="spinner" aria-hidden="true"></span>
+            <span>Loading queue...</span>
+        </div>
+
+        <!-- Statistics -->
+        <section class="stats-grid" aria-label="Queue statistics">
+            <article class="stat-card">
+                <span class="stat-label">Total Interest</span>
+                <strong id="totalCount">0</strong>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-label">Waiting</span>
+                <strong id="waitingCount">0</strong>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-label">In Review</span>
+                <strong id="reviewCount">0</strong>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-label">Approved</span>
+                <strong id="approvedCount">0</strong>
+            </article>
+        </section>
+
+        <div class="content-grid">
+
+            <!-- Add interest form -->
+            <section class="panel" aria-labelledby="formHeading">
+                <div class="panel-header">
+                    <div>
+                        <p class="section-label">NEW ENTRY</p>
+                        <h2 id="formHeading">Add Adoption Interest</h2>
+                    </div>
+                </div>
+
+                <form id="interestForm" novalidate>
+
+                    <div class="form-group">
+                        <label for="applicantName">
+                            Applicant Name
+                            <span aria-hidden="true">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="applicantName"
+                            name="applicantName"
+                            autocomplete="name"
+                            maxlength="80"
+                            placeholder="Enter applicant name"
+                            aria-required="true"
+                            aria-describedby="applicantNameError"
+                        >
+
+                        <small
+                            id="applicantNameError"
+                            class="error-message"
+                            role="alert"
+                        ></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="animalName">
+                            Animal Name
+                            <span aria-hidden="true">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="animalName"
+                            name="animalName"
+                            maxlength="80"
+                            placeholder="Enter animal name"
+                            aria-required="true"
+                            aria-describedby="animalNameError"
+                        >
+
+                        <small
+                            id="animalNameError"
+                            class="error-message"
+                            role="alert"
+                        ></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact">
+                            Contact Email
+                            <span aria-hidden="true">*</span>
+                        </label>
+
+                        <input
+                            type="email"
+                            id="contact"
+                            name="contact"
+                            autocomplete="email"
+                            maxlength="120"
+                            placeholder="applicant@example.com"
+                            aria-required="true"
+                            aria-describedby="contactError"
+                        >
+
+                        <small
+                            id="contactError"
+                            class="error-message"
+                            role="alert"
+                        ></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="interestDate">
+                            Interest Date
+                            <span aria-hidden="true">*</span>
+                        </label>
+
+                        <input
+                            type="date"
+                            id="interestDate"
+                            name="interestDate"
+                            aria-required="true"
+                            aria-describedby="interestDateError"
+                        >
+
+                        <small
+                            id="interestDateError"
+                            class="error-message"
+                            role="alert"
+                        ></small>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                        id="submitButton"
+                        aria-label="Add adoption interest to queue"
+                    >
+                        Add to Queue
+                    </button>
+
+                </form>
+            </section>
+
+            <!-- Queue -->
+            <section class="panel queue-panel" aria-labelledby="queueHeading">
+
+                <div class="panel-header queue-header">
+                    <div>
+                        <p class="section-label">CURRENT QUEUE</p>
+                        <h2 id="queueHeading">Adoption Interest</h2>
+                    </div>
+                </div>
+
+                <div class="toolbar">
+
+                    <div class="search-wrapper">
+                        <label for="searchInput" class="visually-hidden">
+                            Search adoption interest
+                        </label>
+
+                        <input
+                            type="search"
+                            id="searchInput"
+                            placeholder="Search applicant or animal..."
+                            aria-label="Search applicant or animal"
+                        >
+                    </div>
+
+                    <div class="filter-wrapper">
+                        <label for="statusFilter" class="visually-hidden">
+                            Filter by status
+                        </label>
+
+                        <select
+                            id="statusFilter"
+                            aria-label="Filter adoption interest by status"
+                        >
+                            <option value="all">All statuses</option>
+                            <option value="Waiting">Waiting</option>
+                            <option value="In Review">In Review</option>
+                            <option value="Approved">Approved</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div
+                    id="queueContainer"
+                    class="queue-container"
+                    aria-live="polite"
+                ></div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>
+                Adoption Interest Queue &mdash; Internal Shelter Operations
+            </p>
+        </div>
+    </footer>
+
+    <script src="app.js" defer></script>
+</body>
+</html>
+```
